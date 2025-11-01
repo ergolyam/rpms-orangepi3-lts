@@ -1,0 +1,105 @@
+name: COPR build on push
+
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+      - '.copr/**'
+  workflow_dispatch: {}
+
+jobs:
+  detect_changed_dirs:
+    name: Detect changed top-level dirs
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.collect.outputs.has_changes }}
+      matrix: ${{ steps.collect.outputs.matrix }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect changed dirs
+        id: collect
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE="${{ github.event.before }}"
+          HEAD="${{ github.sha }}"
+
+          if [ -z "${BASE}" ] || [ "${BASE}" = "0000000000000000000000000000000000000000" ]; then
+            if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+              BASE="$(git rev-parse HEAD^)"
+            else
+              BASE="$(git rev-list --max-parents=0 HEAD)"
+            fi
+          fi
+
+          git diff --name-only "${BASE}" "${HEAD}" \
+            | awk -F/ 'NF>1 {print $1}' \
+            | sort -u > _cands.txt || true
+
+          : > _dirs.txt
+          while read -r d; do
+            [ -z "${d}" ] && continue
+            [[ "${d}" == ".github" || "${d}" == ".copr" ]] && continue
+            [ -d "${d}" ] && echo "${d}" >> _dirs.txt
+          done < _cands.txt
+
+          if [ ! -s _dirs.txt ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            echo "No changed buildable dirs found."
+            exit 0
+          fi
+
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+
+          MATRIX='{"include":['
+          i=0
+          while read -r d; do
+            [ $i -gt 0 ] && MATRIX+=","
+            MATRIX+="{\"subdir\":\"${d}\"}"
+            i=$((i+1))
+          done < _dirs.txt
+          MATRIX+=']}'
+
+          echo "matrix=${MATRIX}" >> "$GITHUB_OUTPUT"
+          echo "Matrix: ${MATRIX}"
+
+  copr_build:
+    name: COPR build (${{ matrix.subdir }})
+    needs: detect_changed_dirs
+    if: needs.detect_changed_dirs.outputs.has_changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.detect_changed_dirs.outputs.matrix) }}
+      max-parallel: 10
+    container:
+      image: fedora:latest
+    steps:
+      - name: Install copr-cli
+        run: |
+          dnf -y install copr-cli git && dnf clean all
+
+      - name: Configure copr-cli credentials
+        env:
+          COPR_CONFIG: ${{ secrets.COPR_CONFIG }}
+        run: |
+          mkdir -p ~/.config
+          printf "%s" "${COPR_CONFIG}" > ~/.config/copr
+          chmod 600 ~/.config/copr
+
+      - name: Trigger COPR build for ${{ matrix.subdir }}
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euxo pipefail
+          copr-cli buildscm "${REPOSITORY}" \
+            --clone-url "https://github.com/${REPOSITORY}.git" \
+            --method make_srpm \
+            --subdir "${{ matrix.subdir }}"
+
