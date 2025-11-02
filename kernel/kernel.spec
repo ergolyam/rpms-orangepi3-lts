@@ -37,7 +37,7 @@ Requires: systemd
 Mainline kernel for Orange PI 3 LTS (sunxi64).
 
 %prep
-tar -xzf %{SOURCE1}
+tar -xf %{SOURCE1}
 cd linux-%{version}
 cp %{SOURCE2} .config
 patch -p1 -i %{PATCH1}
