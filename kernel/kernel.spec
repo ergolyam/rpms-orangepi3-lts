@@ -5,8 +5,8 @@ Release: 1.sunxi64
 Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
 Source1: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz
 Source2: https://github.com/armbian/build/raw/7828980921716b46ba3e854ba64b2735325c2d04/config/kernel/linux-sunxi64-current.config
-Patch1: https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw
-Patch2: https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw
+Patch1: https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw#/0002-sunxi-bindings.patch
+Patch2: https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw#/0003-orangepi3-lts-dtb.patch
 License: GPL
 
 Provides: kernel = %{version}-%{release}
