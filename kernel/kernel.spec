@@ -47,22 +47,22 @@ patch -p1 -i %{PATCH2}
 cd linux-%{version}
 make LOCALVERSION="-%{release}" olddefconfig
 scripts/config --disable WERROR
-make EXTRAVERSION="-%{release}" -j`nproc`
+make LOCALVERSION="-%{release}" -j`nproc`
 
 %install
 cd linux-%{version}
-kernel_version=$(make EXTRAVERSION="-%{release}" kernelrelease)
+kernel_version=$(make LOCALVERSION="-%{release}" kernelrelease)
 
 mkdir -p %{buildroot}/boot/
 cp arch/arm64/boot/Image.gz %{buildroot}/boot/vmlinuz-$kernel_version
 cp System.map %{buildroot}/boot/System.map-$kernel_version
 cp .config %{buildroot}/boot/config-$kernel_version
 
-make EXTRAVERSION="-%{release}" modules_install INSTALL_MOD_PATH=%{buildroot}/usr
+make LOCALVERSION="-%{release}" modules_install INSTALL_MOD_PATH=%{buildroot}/usr
 cp arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3-lts.dtb %{buildroot}/usr/lib/modules/$kernel_version/devicetree
 ln -s ./devicetree %{buildroot}/usr/lib/modules/$kernel_version/dtb
 cp arch/arm64/boot/Image.gz %{buildroot}/usr/lib/modules/$kernel_version/vmlinuz
-make EXTRAVERSION="-%{release}" headers_install INSTALL_HDR_PATH=%{buildroot}/usr
+make LOCALVERSION="-%{release}" headers_install INSTALL_HDR_PATH=%{buildroot}/usr
 rm %{buildroot}/usr/lib/modules/%{version}*/build
 
 %files
