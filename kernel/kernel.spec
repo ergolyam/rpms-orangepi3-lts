@@ -45,6 +45,8 @@ patch -p1 -i %{PATCH2}
 
 %build
 cd linux-%{version}
+make LOCALVERSION="-%{release}" olddefconfig
+scripts/config --disable WERROR
 make EXTRAVERSION="-%{release}" -j`nproc`
 
 %install
