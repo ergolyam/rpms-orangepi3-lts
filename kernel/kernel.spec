@@ -1,6 +1,6 @@
 Name: kernel
 ExclusiveArch: aarch64
-Version: 6.17.6
+Version: 6.18.6
 Release: 1.sunxi64
 Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
 Source1: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz
