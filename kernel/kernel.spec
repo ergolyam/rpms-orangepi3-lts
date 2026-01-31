@@ -1,10 +1,12 @@
+%global soc sunxi64
 Name: kernel
 ExclusiveArch: aarch64
 Version: 6.18.6
-Release: 1.sunxi64
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
+Release: 1.%{soc}
+Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
 Source1: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz
-Source2: https://github.com/armbian/build/raw/7828980921716b46ba3e854ba64b2735325c2d04/config/kernel/linux-sunxi64-current.config
+Source2: https://github.com/armbian/build/raw/7828980921716b46ba3e854ba64b2735325c2d04/config/kernel/linux-%{soc}-current.config
+Source3: extra-%{soc}.config
 Patch1: https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw#/0002-sunxi-bindings.patch
 Patch2: https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw#/0003-orangepi3-lts-dtb.patch
 License: GPL
@@ -34,12 +36,13 @@ Requires: coreutils
 Requires: systemd
 
 %description
-Mainline kernel for Orange PI 3 LTS (sunxi64).
+Mainline kernel for Orange PI 3 LTS (%{soc}).
 
 %prep
 tar -xf %{SOURCE1}
 cd linux-%{version}
 cp %{SOURCE2} .config
+cat %{SOURCE3} >> .config
 patch -p1 -i %{PATCH1}
 patch -p1 -i %{PATCH2}
 
@@ -80,44 +83,44 @@ kernel-install remove %{version}-%{release} /usr/lib/modules/%{version}-%{releas
 
 %package core
 License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
+Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
 Requires: kernel
 
 %description core
-Mainline kernel for Orange PI 3 LTS (sunxi64).
+Mainline kernel for Orange PI 3 LTS (%{soc}).
 
 %files core
 
 
 %package modules
 License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
+Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
 Requires: kernel
 
 %description modules
-Mainline kernel for Orange PI 3 LTS (sunxi64).
+Mainline kernel for Orange PI 3 LTS (%{soc}).
 
 %files modules
 
 
 %package devel
 License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
+Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
 Requires: kernel-headers
 
 %description devel
-Mainline kernel header for Orange PI 3 LTS (sunxi64).
+Mainline kernel header for Orange PI 3 LTS (%{soc}).
 
 %files devel
 
 
 %package headers
 License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
+Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
 Provides: kernel-devel = %{version}-%{release}
 
 %description headers
-Mainline kernel headers for Orange PI 3 LTS (sunxi64).
+Mainline kernel headers for Orange PI 3 LTS (%{soc}).
 
 %files headers
 /usr/include
@@ -125,12 +128,12 @@ Mainline kernel headers for Orange PI 3 LTS (sunxi64).
 
 %package devel-matched
 License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (sunxi64).
+Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
 Requires: kernel-devel
 Requires: kernel-core
 
 %description devel-matched
-Mainline kernel headers for Orange PI 3 LTS (sunxi64).
+Mainline kernel headers for Orange PI 3 LTS (%{soc}).
 
 %files devel-matched
 
