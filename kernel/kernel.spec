@@ -1,139 +1,66 @@
-%global soc sunxi64
-Name: kernel
-ExclusiveArch: aarch64
-Version: 6.18.6
-Release: 1.%{soc}
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
-Source1: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-%{version}.tar.xz
-Source2: https://github.com/armbian/build/raw/7828980921716b46ba3e854ba64b2735325c2d04/config/kernel/linux-%{soc}-current.config
-Source3: extra-%{soc}.config
-Patch1: https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw#/0002-sunxi-bindings.patch
-Patch2: https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw#/0003-orangepi3-lts-dtb.patch
-License: GPL
+%undefine        _debugsource_packages
+%global soc      sunxi64
+Version:         6.18.6
+Release:         1.%{soc}%{?dist}
+ExclusiveArch:   aarch64
+Name:            kernel
+Summary:         mainline kernel for %{soc}
+License:         GPLv2
+URL:             https://cdn.kernel.org/pub/linux/kernel
+Source0:         %{url}/v6.x/linux-%{version}.tar.xz
+Source1:         https://github.com/armbian/build/raw/7828980921716b46ba3e854ba64b2735325c2d04/config/kernel/linux-%{soc}-current.config
+Source2:         extra-%{soc}.config
 
-Provides: kernel = %{version}-%{release}
-Provides: kernel-core = %{version}-%{release}
-Provides: kernel-modules = %{version}-%{release}
+Patch1:          https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw#/0002-sunxi-bindings.patch
+Patch2:          https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw#/0003-orangepi3-lts-dtb.patch
 
-BuildRequires: kmod, bash, coreutils, tar, git-core, which
-BuildRequires: bzip2, xz, findutils, m4, perl-interpreter, perl-Carp, perl-devel, perl-generators, make, diffutils, gawk
-BuildRequires: zstd
-BuildRequires: gcc, binutils, redhat-rpm-config, hmaccalc, bison, flex, gcc-c++
-BuildRequires: rust, rust-src, bindgen, rustfmt, clippy
-BuildRequires: net-tools, hostname, bc, elfutils-devel
-BuildRequires: dwarves
-BuildRequires: python3
-BuildRequires: python3-devel
-BuildRequires: python3-pyyaml
-BuildRequires: glibc-static
-BuildRequires: rsync
-BuildRequires: opencsd-devel >= 1.0.0
-BuildRequires: openssl-devel
+Provides:        kernel               = %{version}-%{release}
+Provides:        kernel-core          = %{version}-%{release}
+Provides:        kernel-devel         = %{version}-%{release}
+Provides:        kernel-headers       = %{version}-%{release}
+Provides:        kernel-modules       = %{version}-%{release}
+Provides:        kernel-modules-core  = %{version}-%{release}
 
-Requires: dracut >= 027
-Requires: bash
-Requires: coreutils
-Requires: systemd
+BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++ git-core hmaccalc hostname make openssl-devel perl-interpreter rsync tar which flex bzip2 xz zstd python3 python3-devel python3-pyyaml rust rust-src bindgen rustfmt clippy opencsd-devel net-tools
+
+%global uname_r %{version}-%{release}.%{_target_cpu}
 
 %description
-Mainline kernel for Orange PI 3 LTS (%{soc}).
+%{summary}
 
 %prep
-tar -xf %{SOURCE1}
+tar -xf %{SOURCE0}
 cd linux-%{version}
-cp %{SOURCE2} .config
-cat %{SOURCE3} >> .config
+mv %{SOURCE1} .config
+cat %{SOURCE2} >> .config
+sed -i '/^CONFIG_LOCALVERSION=/d' .config
 patch -p1 -i %{PATCH1}
 patch -p1 -i %{PATCH2}
 
 %build
 cd linux-%{version}
-make LOCALVERSION="-%{release}" olddefconfig
-scripts/config --disable WERROR
-make LOCALVERSION="-%{release}" -j`nproc`
+make olddefconfig
+make EXTRAVERSION="-%{release}.%{_target_cpu}" LOCALVERSION= -j%{?_smp_build_ncpus} Image modules dtbs
 
 %install
 cd linux-%{version}
-kernel_version=$(make LOCALVERSION="-%{release}" kernelrelease)
-
-mkdir -p %{buildroot}/boot/
-cp arch/arm64/boot/Image.gz %{buildroot}/boot/vmlinuz-$kernel_version
-cp System.map %{buildroot}/boot/System.map-$kernel_version
-cp .config %{buildroot}/boot/config-$kernel_version
-
-make LOCALVERSION="-%{release}" modules_install INSTALL_MOD_PATH=%{buildroot}/usr
-cp arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3-lts.dtb %{buildroot}/usr/lib/modules/$kernel_version/devicetree
-ln -s ./devicetree %{buildroot}/usr/lib/modules/$kernel_version/dtb
-cp arch/arm64/boot/Image.gz %{buildroot}/usr/lib/modules/$kernel_version/vmlinuz
-make LOCALVERSION="-%{release}" headers_install INSTALL_HDR_PATH=%{buildroot}/usr
-rm %{buildroot}/usr/lib/modules/%{version}*/build
+make EXTRAVERSION="-%{release}.%{_target_cpu}" LOCALVERSION= INSTALL_MOD_PATH=%{buildroot}/usr INSTALL_HDR_PATH=%{buildroot}/usr modules_install headers_install
+install -Dm644 arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3-lts.dtb %{buildroot}/usr/lib/modules/%{uname_r}/devicetree
+install -Dm644 arch/arm64/boot/Image %{buildroot}/usr/lib/modules/%{uname_r}/vmlinuz
+install -Dm644 System.map            %{buildroot}/usr/lib/modules/%{uname_r}/System.map
+install -Dm644 .config               %{buildroot}/usr/lib/modules/%{uname_r}/config
+install -d %{buildroot}/usr/lib/kernel
+install -d %{buildroot}/usr/lib/ostree-boot
 
 %files
-/boot/System.map-%{version}*
-/boot/config-%{version}*
-/boot/vmlinuz-%{version}*
-/usr/lib/modules/%{version}*
+/usr/include
+/usr/lib/modules/%{uname_r}
 
 %posttrans
-kernel-install add %{version}-%{release} /usr/lib/modules/%{version}-%{release}/vmlinuz
+set -e
+depmod -a %{uname_r}
+dracut /usr/lib/modules/%{uname_r}/initramfs.img %{uname_r}
+kernel-install add %{uname_r} /usr/lib/modules/%{uname_r}/vmlinuz /usr/lib/modules/%{uname_r}/initramfs.img
 
-%postun
-kernel-install remove %{version}-%{release} /usr/lib/modules/%{version}-%{release}/vmlinuz
-
-
-%package core
-License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
-Requires: kernel
-
-%description core
-Mainline kernel for Orange PI 3 LTS (%{soc}).
-
-%files core
-
-
-%package modules
-License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
-Requires: kernel
-
-%description modules
-Mainline kernel for Orange PI 3 LTS (%{soc}).
-
-%files modules
-
-
-%package devel
-License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
-Requires: kernel-headers
-
-%description devel
-Mainline kernel header for Orange PI 3 LTS (%{soc}).
-
-%files devel
-
-
-%package headers
-License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
-Provides: kernel-devel = %{version}-%{release}
-
-%description headers
-Mainline kernel headers for Orange PI 3 LTS (%{soc}).
-
-%files headers
-/usr/include
-
-
-%package devel-matched
-License: GPL
-Summary: AIO package for linux kernel, modules and headers for Orange PI 3 LTS (%{soc}).
-Requires: kernel-devel
-Requires: kernel-core
-
-%description devel-matched
-Mainline kernel headers for Orange PI 3 LTS (%{soc}).
-
-%files devel-matched
-
+%changelog
+%autochangelog
