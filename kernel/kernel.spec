@@ -29,21 +29,16 @@ BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++
 %{summary}
 
 %prep
-tar -xf %{SOURCE0}
-cd linux-%{version}
-mv %{SOURCE1} .config
+%autosetup -n linux-%{version} -p1
+install -m 0644 %{SOURCE1} .config
 cat %{SOURCE2} >> .config
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
-patch -p1 -i %{PATCH1}
-patch -p1 -i %{PATCH2}
 
 %build
-cd linux-%{version}
 make olddefconfig
 make EXTRAVERSION="-%{release}.%{_target_cpu}" LOCALVERSION= -j%{?_smp_build_ncpus} Image modules dtbs
 
 %install
-cd linux-%{version}
 make EXTRAVERSION="-%{release}.%{_target_cpu}" LOCALVERSION= INSTALL_MOD_PATH=%{buildroot}/usr INSTALL_HDR_PATH=%{buildroot}/usr modules_install headers_install
 install -Dm644 arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3-lts.dtb %{buildroot}/usr/lib/modules/%{uname_r}/devicetree
 install -Dm644 arch/arm64/boot/Image %{buildroot}/usr/lib/modules/%{uname_r}/vmlinuz
