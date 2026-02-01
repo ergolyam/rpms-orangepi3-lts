@@ -29,10 +29,12 @@ BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++
 %{summary}
 
 %prep
-%autosetup -n linux-%{version} -p1
+%autosetup -n linux-%{version} -N
 install -m 0644 %{SOURCE1} .config
 cat %{SOURCE2} >> .config
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
+patch -p1 -i %{PATCH1}
+patch -p1 -i %{PATCH2}
 
 %build
 make olddefconfig
