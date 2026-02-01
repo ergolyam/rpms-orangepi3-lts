@@ -30,7 +30,8 @@ BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++
 
 %prep
 %autosetup -n linux-%{version} -N
-./scripts/kconfig/merge_config.sh -O . %{SOURCE1} %{SOURCE2}
+make KCONFIG_CONFIG=upstream.config defconfig
+./scripts/kconfig/merge_config.sh -O . upstream.config %{SOURCE1} %{SOURCE2}
 patch -p1 -i %{PATCH1}
 patch -p1 -i %{PATCH2}
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
