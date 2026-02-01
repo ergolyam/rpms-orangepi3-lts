@@ -30,11 +30,10 @@ BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++
 
 %prep
 %autosetup -n linux-%{version} -N
-install -m 0644 %{SOURCE1} .config
-cat %{SOURCE2} >> .config
-sed -i '/^CONFIG_LOCALVERSION=/d' .config
+./scripts/kconfig/merge_config.sh -O . %{SOURCE1} %{SOURCE2}
 patch -p1 -i %{PATCH1}
 patch -p1 -i %{PATCH2}
+sed -i '/^CONFIG_LOCALVERSION=/d' .config
 
 %build
 make olddefconfig
