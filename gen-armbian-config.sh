@@ -3,6 +3,7 @@ set -euo pipefail
 
 ARMBIAN_KERNEL_URL="https://raw.githubusercontent.com/armbian/build/refs/heads/main/lib/functions/compilation/armbian-kernel.sh"
 OUTPUT="${1:-armbian.config}"
+NO_BTF="${2:-}"
 
 ARMBIAN_KERNEL_CONTENT="$(curl -fsSL "${ARMBIAN_KERNEL_URL}")"
 exec 3<<<"${ARMBIAN_KERNEL_CONTENT}"
@@ -62,7 +63,11 @@ function linux-version() {
 export ARCH="arm64"
 export BRANCH="current"
 export KERNEL_MAJOR_MINOR="6.18"
-export KERNEL_BTF="${KERNEL_BTF:-}"
+if [[ "${NO_BTF}" == "--no-btf" || "${NO_BTF}" == "no-btf" ]]; then
+  export KERNEL_BTF="no"
+else
+  export KERNEL_BTF="${KERNEL_BTF:-}"
+fi
 
 # Arrays/dict used by armbian-kernel.sh
 declare -a opts_y=() opts_n=() opts_m=()
