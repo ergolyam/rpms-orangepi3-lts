@@ -9,7 +9,8 @@ License:         GPLv2
 URL:             https://cdn.kernel.org/pub/linux/kernel
 Source0:         %{url}/v6.x/linux-%{version}.tar.xz
 Source1:         https://github.com/armbian/build/raw/7828980921716b46ba3e854ba64b2735325c2d04/config/kernel/linux-%{soc}-current.config
-Source2:         extra-%{soc}.config
+Source2:         armbian.config
+Source3:         extra-%{soc}.config
 
 Patch1:          https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw#/0002-sunxi-bindings.patch
 Patch2:          https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw#/0003-orangepi3-lts-dtb.patch
@@ -30,8 +31,7 @@ BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++
 
 %prep
 %autosetup -n linux-%{version} -N
-make KCONFIG_CONFIG=upstream.config defconfig
-./scripts/kconfig/merge_config.sh -O . upstream.config %{SOURCE1} %{SOURCE2}
+./scripts/kconfig/merge_config.sh -O . %{SOURCE1} %{SOURCE2} %{SOURCE3}
 patch -p1 -i %{PATCH1}
 patch -p1 -i %{PATCH2}
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
