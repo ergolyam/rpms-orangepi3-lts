@@ -1,7 +1,7 @@
 %undefine        _debugsource_packages
 %global soc      sunxi64
 Version:         6.18.6
-Release:         3.%{soc}%{?dist}
+Release:         4.%{soc}%{?dist}
 ExclusiveArch:   aarch64
 Name:            kernel
 Summary:         mainline kernel for %{soc}
