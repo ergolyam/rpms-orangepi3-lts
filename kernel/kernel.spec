@@ -3,7 +3,7 @@
 %global armbian_build_commit 6f022174747f14f1b022f0eb707ff35cf1f5133c
 %global armbian_build_raw https://github.com/armbian/build/raw/%{armbian_build_commit}
 Version:         6.18.6
-Release:         6.%{soc}%{?dist}
+Release:         7.%{soc}%{?dist}
 ExclusiveArch:   aarch64
 Name:            kernel
 Summary:         mainline kernel for %{soc}
@@ -78,6 +78,7 @@ patch -p1 -i %{PATCH20}
 patch -p1 -i %{PATCH21}
 patch -p1 -i %{PATCH22}
 patch -p1 -i %{PATCH23}
+echo 'obj-$(CONFIG_SPARD_WLAN_SUPPORT) += uwe5622/' >> drivers/net/wireless/Makefile
 ./scripts/kconfig/merge_config.sh -O . %{SOURCE1} %{SOURCE2} %{SOURCE3}
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
 
