@@ -19,24 +19,25 @@ Patch2:          https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrab
 
 Patch3:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/modem-6.18/0001-misc-modem-power-Power-manager-for-modems.patch
 Patch4:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/drv-misc-sunxi-add-addr-mgt-driver-uwe5622.patch
-Patch5:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3.patch
-Patch6:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix-v6.3.patch
-Patch7:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3-compilation-fix.patch
-Patch8:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.4-post.patch
-Patch9:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-warnings.patch
-Patch10:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.1-post.patch
-Patch11:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.1.patch
-Patch12:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.6-fix-tty-sdio.patch
-Patch13:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-setting-mac-address-for-netdev.patch
-Patch14:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-Fix-compilation-with-6.7-kernel.patch
-Patch15:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-reduce-system-load.patch
-Patch16:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.9.patch
-Patch17:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.11.patch
-Patch18:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-spanning-writes.patch
-Patch19:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-timer-api-changes-for-6.15-only-sunxi.patch
-Patch20:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch
-Patch21:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch
-Patch22:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.18.patch
+Patch5:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/drv-nvmem-sunxi-add-chipid-serial-helpers.patch
+Patch6:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3.patch
+Patch7:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix-v6.3.patch
+Patch8:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3-compilation-fix.patch
+Patch9:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.4-post.patch
+Patch10:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-warnings.patch
+Patch11:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.1-post.patch
+Patch12:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.1.patch
+Patch13:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.6-fix-tty-sdio.patch
+Patch14:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-setting-mac-address-for-netdev.patch
+Patch15:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-Fix-compilation-with-6.7-kernel.patch
+Patch16:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-reduce-system-load.patch
+Patch17:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.9.patch
+Patch18:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.11.patch
+Patch19:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-spanning-writes.patch
+Patch20:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-timer-api-changes-for-6.15-only-sunxi.patch
+Patch21:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch
+Patch22:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch
+Patch23:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.18.patch
 
 Provides:        kernel               = %{version}-%{release}
 Provides:        kernel-core          = %{version}-%{release}
@@ -76,6 +77,7 @@ patch -p1 -i %{PATCH19}
 patch -p1 -i %{PATCH20}
 patch -p1 -i %{PATCH21}
 patch -p1 -i %{PATCH22}
+patch -p1 -i %{PATCH23}
 ./scripts/kconfig/merge_config.sh -O . %{SOURCE1} %{SOURCE2} %{SOURCE3}
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
 
