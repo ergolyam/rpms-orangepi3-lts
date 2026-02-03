@@ -3,7 +3,7 @@
 
 Name:           uwe5622-firmware
 Version:        1.0
-Release:        1.git%{shortcommit}%{?dist}
+Release:        2.git%{shortcommit}%{?dist}
 Summary:        Unisoc UWE5622 (AW859A) Wi-Fi/Bluetooth firmware
 License:        Unknown
 URL:            https://github.com/orangepi-xunlong/firmware
@@ -12,21 +12,13 @@ Source1:        aw859a-wifi.service
 Source2:        sprd-bluetooth
 Source3:        sprd-bluetooth.service
 Source4:        uwe5622-wireless.conf
-Source5:        https://github.com/armbian/build/raw/main/packages/blobs/bt/hciattach/hciattach_opi_arm64_upstream
 BuildArch:      noarch
 AutoReqProv:    no
-Requires:       %{name}-hciattach
+Requires:       hciattach-opi
 
 %description
 Firmware for the Unisoc UWE5622 (AW859A) Wi-Fi/Bluetooth combo.
 Packaged from the Orange Pi firmware repository.
-
-%package hciattach
-Summary:        hciattach_opi helper for UWE5622 Bluetooth
-BuildArch:      aarch64
-
-%description hciattach
-ARM64 hciattach_opi helper used by sprd-bluetooth for UWE5622 Bluetooth.
 
 %prep
 %autosetup -n firmware-%{commit}
@@ -40,7 +32,6 @@ install -Dm 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/aw859a-wifi.serv
 install -Dm 0755 %{SOURCE2} %{buildroot}/usr/bin/sprd-bluetooth
 install -Dm 0644 %{SOURCE3} %{buildroot}/usr/lib/systemd/system/sprd-bluetooth.service
 install -Dm 0644 %{SOURCE4} %{buildroot}/usr/lib/modules-load.d/uwe5622-wireless.conf
-install -Dm 0755 %{SOURCE5} %{buildroot}/usr/bin/hciattach_opi
 
 %files
 /usr/lib/firmware/wcnmodem.bin
@@ -51,9 +42,6 @@ install -Dm 0755 %{SOURCE5} %{buildroot}/usr/bin/hciattach_opi
 /usr/lib/systemd/system/sprd-bluetooth.service
 /usr/lib/modules-load.d/uwe5622-wireless.conf
 /usr/bin/sprd-bluetooth
-
-%files hciattach
-/usr/bin/hciattach_opi
 
 %changelog
 %autochangelog
