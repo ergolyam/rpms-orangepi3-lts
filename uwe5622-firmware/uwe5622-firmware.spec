@@ -3,7 +3,7 @@
 
 Name:           uwe5622-firmware
 Version:        1.0
-Release:        2.git%{shortcommit}%{?dist}
+Release:        3.git%{shortcommit}%{?dist}
 Summary:        Unisoc UWE5622 (AW859A) Wi-Fi/Bluetooth firmware
 License:        Unknown
 URL:            https://github.com/orangepi-xunlong/firmware

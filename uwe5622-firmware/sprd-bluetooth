@@ -8,8 +8,11 @@ MACDEV=`findmnt -v -n -o SOURCE / | sed 's/dev//g' | sed -e 's#/$##' -e 's/\.git
 if [[ -e /sys/class/block/${MACDEV}/device/cid ]]; then
 	HASHDEV=`sha256sum /sys/class/block/${MACDEV}/device/cid`
 	BTADDR=`echo "${HASHDEV}" | dd bs=1 count=12 2>/dev/null | sed 's/../&:/g; s/:$//' | sed 's/^../02/'`
+elif [[ -r /etc/machine-id ]]; then
+	HASHDEV=`sha256sum /etc/machine-id`
+	BTADDR=`echo "${HASHDEV}" | dd bs=1 count=12 2>/dev/null | sed 's/../&:/g; s/:$//' | sed 's/^../02/'`
 else
-	echo "Failed to find MAC device" >&2
+	echo "Failed to find MAC source" >&2
 	exit 1
 fi
 
