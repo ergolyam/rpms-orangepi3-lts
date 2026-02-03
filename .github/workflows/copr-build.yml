@@ -1,10 +1,6 @@
 name: COPR build on push
 
 on:
-  push:
-    paths-ignore:
-      - '.github/**'
-      - '.copr/**'
   workflow_dispatch: {}
 
 jobs:
