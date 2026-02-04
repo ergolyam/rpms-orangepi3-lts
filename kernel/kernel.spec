@@ -37,6 +37,9 @@ Patch18:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-ti
 Patch19:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch
 Patch20:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch
 Patch21:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.18.patch
+Patch22:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/hdmi-audio-6.18/0010-arm64-dts-allwinner-h6-Add-hdmi-sound-card.patch
+Patch23:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/0401-arm64-dts-sun50i-h6-add-ac200-ephy.patch
+Patch24:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/0402-arm64-dts-sun50i-h6-add-ac200-codec.patch
 
 Provides:        kernel               = %{version}-%{release}
 Provides:        kernel-core          = %{version}-%{release}
