@@ -4,7 +4,7 @@
 %global armbian_build_commit 6f022174747f14f1b022f0eb707ff35cf1f5133c
 %global armbian_build_raw https://github.com/armbian/build/raw/%{armbian_build_commit}
 Version:         6.18.6
-Release:         8.%{soc}%{?dist}
+Release:         9.%{soc}%{?dist}
 ExclusiveArch:   aarch64
 Name:            kernel
 Summary:         mainline kernel for %{soc}
@@ -61,6 +61,7 @@ install -Dm644 %{SOURCE1} arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3-lts
 echo 'dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h6-orangepi-3-lts.dtb' >> arch/arm64/boot/dts/allwinner/Makefile
 %autopatch -p1
 echo 'obj-$(CONFIG_SPARD_WLAN_SUPPORT) += uwe5622/' >> drivers/net/wireless/Makefile
+sed -i 's/^#ccflags-y += -DCONFIG_SDIO_PWRSEQ/ccflags-y += -DCONFIG_SDIO_PWRSEQ/' drivers/net/wireless/uwe5622/unisocwcn/Makefile
 ./scripts/kconfig/merge_config.sh -O . %{SOURCE2} %{SOURCE3} %{SOURCE4}
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
 
