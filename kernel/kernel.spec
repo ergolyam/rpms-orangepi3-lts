@@ -1,43 +1,42 @@
 %undefine        _debugsource_packages
+%global _default_patch_fuzz 2
 %global soc      sunxi64
 %global armbian_build_commit 6f022174747f14f1b022f0eb707ff35cf1f5133c
 %global armbian_build_raw https://github.com/armbian/build/raw/%{armbian_build_commit}
 Version:         6.18.6
-Release:         7.%{soc}%{?dist}
+Release:         8.%{soc}%{?dist}
 ExclusiveArch:   aarch64
 Name:            kernel
 Summary:         mainline kernel for %{soc}
 License:         GPLv2
 URL:             https://cdn.kernel.org/pub/linux/kernel
 Source0:         %{url}/v6.x/linux-%{version}.tar.xz
-Source1:         %{armbian_build_raw}/config/kernel/linux-%{soc}-current.config
-Source2:         armbian.config
-Source3:         extra-%{soc}.config
+Source1:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/dt_64/sun50i-h6-orangepi-3-lts.dts
+Source2:         %{armbian_build_raw}/config/kernel/linux-%{soc}-current.config
+Source3:         armbian.config
+Source4:         extra-%{soc}.config
 
-Patch1:          https://lore.kernel.org/all/20250413134318.66681-2-jernej.skrabec@gmail.com/raw#/0002-sunxi-bindings.patch
-Patch2:          https://lore.kernel.org/all/20250413134318.66681-3-jernej.skrabec@gmail.com/raw#/0003-orangepi3-lts-dtb.patch
-
-Patch3:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/modem-6.18/0001-misc-modem-power-Power-manager-for-modems.patch
-Patch4:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/drv-misc-sunxi-add-addr-mgt-driver-uwe5622.patch
-Patch5:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/drv-nvmem-sunxi-add-chipid-serial-helpers.patch
-Patch6:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3.patch
-Patch7:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix-v6.3.patch
-Patch8:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3-compilation-fix.patch
-Patch9:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.4-post.patch
-Patch10:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-warnings.patch
-Patch11:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.1-post.patch
-Patch12:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.1.patch
-Patch13:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.6-fix-tty-sdio.patch
-Patch14:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-setting-mac-address-for-netdev.patch
-Patch15:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-Fix-compilation-with-6.7-kernel.patch
-Patch16:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-reduce-system-load.patch
-Patch17:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.9.patch
-Patch18:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.11.patch
-Patch19:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-spanning-writes.patch
-Patch20:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-timer-api-changes-for-6.15-only-sunxi.patch
-Patch21:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch
-Patch22:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch
-Patch23:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.18.patch
+Patch1:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/modem-6.18/0001-misc-modem-power-Power-manager-for-modems.patch
+Patch2:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/drv-misc-sunxi-add-addr-mgt-driver-uwe5622.patch
+Patch3:          %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/drv-nvmem-sunxi-add-chipid-serial-helpers.patch
+Patch4:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3.patch
+Patch5:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-bugfix-v6.3.patch
+Patch6:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-allwinner-v6.3-compilation-fix.patch
+Patch7:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.4-post.patch
+Patch8:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-warnings.patch
+Patch9:          %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-park-link-v6.1-post.patch
+Patch10:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.1.patch
+Patch11:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.6-fix-tty-sdio.patch
+Patch12:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-setting-mac-address-for-netdev.patch
+Patch13:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-Fix-compilation-with-6.7-kernel.patch
+Patch14:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/wireless-uwe5622-reduce-system-load.patch
+Patch15:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.9.patch
+Patch16:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.11.patch
+Patch17:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-spanning-writes.patch
+Patch18:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-fix-timer-api-changes-for-6.15-only-sunxi.patch
+Patch19:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.16.patch
+Patch20:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.17.patch
+Patch21:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.18.patch
 
 Provides:        kernel               = %{version}-%{release}
 Provides:        kernel-core          = %{version}-%{release}
@@ -55,31 +54,11 @@ BuildRequires:   bc bison dwarves diffutils elfutils-devel findutils gcc gcc-c++
 
 %prep
 %autosetup -n linux-%{version} -N
-patch -p1 -i %{PATCH1}
-patch -p1 -i %{PATCH2}
-patch -p1 -i %{PATCH3}
-patch -p1 -i %{PATCH4}
-patch -p1 -i %{PATCH5}
-patch -p1 -i %{PATCH6}
-patch -p1 -i %{PATCH7}
-patch -p1 -i %{PATCH8}
-patch -p1 -i %{PATCH9}
-patch -p1 -i %{PATCH10}
-patch -p1 -i %{PATCH11}
-patch -p1 -i %{PATCH12}
-patch -p1 -i %{PATCH13}
-patch -p1 -i %{PATCH14}
-patch -p1 -i %{PATCH15}
-patch -p1 -i %{PATCH16}
-patch -p1 -i %{PATCH17}
-patch -p1 -i %{PATCH18}
-patch -p1 -i %{PATCH19}
-patch -p1 -i %{PATCH20}
-patch -p1 -i %{PATCH21}
-patch -p1 -i %{PATCH22}
-patch -p1 -i %{PATCH23}
+install -Dm644 %{SOURCE1} arch/arm64/boot/dts/allwinner/sun50i-h6-orangepi-3-lts.dts
+echo 'dtb-$(CONFIG_ARCH_SUNXI) += sun50i-h6-orangepi-3-lts.dtb' >> arch/arm64/boot/dts/allwinner/Makefile
+%autopatch -p1
 echo 'obj-$(CONFIG_SPARD_WLAN_SUPPORT) += uwe5622/' >> drivers/net/wireless/Makefile
-./scripts/kconfig/merge_config.sh -O . %{SOURCE1} %{SOURCE2} %{SOURCE3}
+./scripts/kconfig/merge_config.sh -O . %{SOURCE2} %{SOURCE3} %{SOURCE4}
 sed -i '/^CONFIG_LOCALVERSION=/d' .config
 
 %build
