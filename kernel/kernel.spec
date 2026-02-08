@@ -4,7 +4,7 @@
 %global armbian_build_commit 6f022174747f14f1b022f0eb707ff35cf1f5133c
 %global armbian_build_raw https://github.com/armbian/build/raw/%{armbian_build_commit}
 Version:         6.18.6
-Release:         8.%{soc}%{?dist}
+Release:         9.%{soc}%{?dist}
 ExclusiveArch:   aarch64
 Name:            kernel
 Summary:         mainline kernel for %{soc}
@@ -40,6 +40,11 @@ Patch21:         %{armbian_build_raw}/patch/misc/wireless-uwe5622/uwe5622-v6.18.
 Patch22:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/hdmi-audio-6.18/0010-arm64-dts-allwinner-h6-Add-hdmi-sound-card.patch
 Patch23:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/0401-arm64-dts-sun50i-h6-add-ac200-ephy.patch
 Patch24:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/0402-arm64-dts-sun50i-h6-add-ac200-codec.patch
+Patch25:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/opi3-eth-6.18/0001-net-stmmac-sun8i-Use-devm_regulator_get-for-PHY-regu.patch
+Patch26:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/opi3-eth-6.18/0002-net-stmmac-sun8i-Rename-PHY-regulator-variable-to-re.patch
+Patch27:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/opi3-eth-6.18/0003-net-stmmac-sun8i-Add-support-for-enabling-a-regulato.patch
+Patch28:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.megous/opi3-eth-6.18/0004-arm64-dts-allwinner-orange-pi-3-Enable-ethernet.patch
+Patch29:         %{armbian_build_raw}/patch/kernel/archive/sunxi-6.18/patches.armbian/arm64-dts-sun50i-h6-h616-add-sunxi-info-nodes.patch
 
 Provides:        kernel               = %{version}-%{release}
 Provides:        kernel-core          = %{version}-%{release}
