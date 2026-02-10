@@ -15,7 +15,7 @@
 %endif
 
 Version:        2026.01
-Release:        2.%{plat}%{?dist}
+Release:        3.%{plat}%{?dist}
 ExclusiveArch:  aarch64
 Name:           u-boot
 Summary:        U-Boot bootloader for the Orange Pi 3 LTS (Allwinner H6).
@@ -50,18 +50,18 @@ make -j%{?_smp_build_ncpus} BL31=arm-trusted-firmware-%{tfa_version}/build/%{pla
 
 %install
 install -Dm 0644 u-boot-sunxi-with-spl.bin %{buildroot}/usr/lib/u-boot/orangepi3-lts/u-boot-sunxi-with-spl.bin
-install -Dm 0755 %{SOURCE2} %{buildroot}/usr/sbin/orangepi3-lts-install-uboot
+install -Dm 0755 %{SOURCE2} %{buildroot}/usr/lib/u-boot/orangepi3-lts-install-uboot
 
 %post
 if [ "${UBOOT_INSTALL_SKIP:-0}" != "1" ]; then
-    /usr/sbin/orangepi3-lts-install-uboot
+    /usr/lib/u-boot/orangepi3-lts-install-uboot
 fi
 
 %files
 %license Licenses/README
 %doc README
 /usr/lib/u-boot/orangepi3-lts/u-boot-sunxi-with-spl.bin
-/usr/sbin/orangepi3-lts-install-uboot
+/usr/lib/u-boot/orangepi3-lts-install-uboot
 
 %changelog
 %autochangelog
