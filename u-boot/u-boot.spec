@@ -17,7 +17,7 @@
 %endif
 
 Version:        2026.01
-Release:        4.%{plat}%{?dist}
+Release:        5.%{plat}%{?dist}
 ExclusiveArch:  aarch64
 Name:           u-boot
 Summary:        U-Boot bootloader for the Orange Pi 3 LTS (Allwinner H6).
@@ -49,7 +49,7 @@ make -j%{?_smp_build_ncpus} PLAT=%{plat} CC=%{target_cc} CROSS_COMPILE=%{cross_c
 popd
 
 pushd crust-%{crust_version}
-make orangepi_3_defconfig CROSS_COMPILE=%{crust_cross_compile}
+make pine_h64_defconfig CROSS_COMPILE=%{crust_cross_compile}
 make -j%{?_smp_build_ncpus} scp CROSS_COMPILE=%{crust_cross_compile}
 popd
 
