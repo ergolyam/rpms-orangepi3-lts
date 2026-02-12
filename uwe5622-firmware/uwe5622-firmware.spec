@@ -3,7 +3,7 @@
 
 Name:           uwe5622-firmware
 Version:        1.0
-Release:        6.git%{shortcommit}%{?dist}
+Release:        7.git%{shortcommit}%{?dist}
 Summary:        Unisoc UWE5622 (AW859A) Wi-Fi/Bluetooth firmware
 License:        Unknown
 URL:            https://github.com/orangepi-xunlong/firmware
@@ -32,7 +32,7 @@ install -Dm 0644 bt_configure_pskey.ini %{buildroot}/usr/lib/firmware/uwe5622/bt
 ln -s uwe5622/wcnmodem.bin %{buildroot}/usr/lib/firmware/wcnmodem.bin
 ln -s uwe5622/wifi_2355b001_1ant.ini %{buildroot}/usr/lib/firmware/wifi_2355b001_1ant.ini
 install -Dm 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/aw859a-wifi.service
-install -Dm 0755 %{SOURCE2} %{buildroot}/usr/bin/sprd-bluetooth
+install -Dm 0755 %{SOURCE2} %{buildroot}/%{_bindir}/sprd-bluetooth
 install -Dm 0644 %{SOURCE3} %{buildroot}/usr/lib/systemd/system/sprd-bluetooth.service
 install -Dm 0644 %{SOURCE4} %{buildroot}/usr/lib/modules-load.d/uwe5622-wireless.conf
 install -Dm 0644 %{SOURCE5} %{buildroot}/usr/lib/systemd/system/aw859a-bluetooth.service
@@ -48,7 +48,7 @@ install -Dm 0644 %{SOURCE5} %{buildroot}/usr/lib/systemd/system/aw859a-bluetooth
 /usr/lib/systemd/system/aw859a-bluetooth.service
 /usr/lib/systemd/system/sprd-bluetooth.service
 /usr/lib/modules-load.d/uwe5622-wireless.conf
-/usr/bin/sprd-bluetooth
+%{_bindir}/sprd-bluetooth
 
 %changelog
 %autochangelog
