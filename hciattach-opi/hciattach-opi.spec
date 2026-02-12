@@ -21,7 +21,7 @@ BuildRequires:  gcc make bluez-libs-devel
 make -C external/cache/sources/hcitools hciattach_opi CFLAGS="%{optflags} -I. -Ilib -Ilib/bluetooth -DVERSION=\\\"5.10\\\" -Wno-strict-aliasing -Wno-int-conversion -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -D_REENTRANT -include sys/uio.h -include sys/time.h"
 
 %install
-install -Dm 0755 external/cache/sources/hcitools/output/hciattach_opi %{buildroot}%{_bindir}/hciattach_opi
+install -Dm 0755 external/cache/sources/hcitools/output/hciattach_opi %{buildroot}/%{_bindir}/hciattach_opi
 
 %files
 %license external/cache/sources/hcitools/NOTICE
